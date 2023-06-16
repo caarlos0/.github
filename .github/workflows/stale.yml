@@ -1,0 +1,24 @@
+name: stale repo identifier
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "3 2 1 * *"
+
+jobs:
+  build:
+    name: stale repo identifier
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker://ghcr.io/github/stale_repos:v1
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          ORGANIZATION: caarlos0
+          INACTIVE_DAYS: 365
+      - uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: Stale repository report
+          content-filepath: ./stale_repos.md
+          assignees: caarlos0
