@@ -9,18 +9,15 @@ jobs:
   build:
     name: stale repo identifier
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        org: [caarlos0 goreleaser]
     steps:
       - uses: actions/checkout@v3
       - uses: docker://ghcr.io/github/stale_repos:v1
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          ORGANIZATION: ${{ matrix.org }}
+          ORGANIZATION: caarlos0
           INACTIVE_DAYS: 365
       - uses: peter-evans/create-issue-from-file@v4
         with:
-          title: Stale repository report for ${{ matrix.org }}
+          title: Stale repository report
           content-filepath: ./stale_repos.md
           assignees: caarlos0
